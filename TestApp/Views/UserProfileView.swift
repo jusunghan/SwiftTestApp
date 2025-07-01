@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct UserProfileView: View {
     @StateObject private var viewModel = UserViewModel()
@@ -34,6 +35,18 @@ struct UserProfileView: View {
                         secondaryButton: .cancel()
                     )
                 }
+                
+                if let userId = Auth.auth().currentUser?.uid {
+                    NavigationLink(destination: TaskView(userId: userId)) {
+                        Text("My Tasks")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                    }
+                }
+
                 
                 NavigationLink(destination: UploadView()) {
                     Text("Go to Upload")
