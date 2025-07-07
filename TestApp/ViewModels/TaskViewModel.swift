@@ -49,4 +49,23 @@ class TaskViewModel: ObservableObject {
     func updateTaskCompletion(userId: String, task: Task){
         taskService.updateTaskCompletion(userId: userId, task: task)
     }
+    
+    func toggleCompletion(for task: Task) {
+        guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
+        tasks[index].isCompleted.toggle()
+        
+        // If syncing to Firestore or another backend, do that here:
+        taskService.updateTaskCompletion(userId: userId, task: tasks[index])
+    }
+    
+    func deleteCompletedTasks() {
+        // Remove from the array
+        let completedTasks = tasks.filter { $0.isCompleted }
+        tasks.removeAll { $0.isCompleted }
+
+        // If syncing with backend (like Firestore), delete from database too:
+        for task in completedTasks {
+            taskService.deleteTask(userId: userId, taskId: task.id)
+        }
+    }
 }

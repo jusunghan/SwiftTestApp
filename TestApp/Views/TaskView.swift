@@ -26,7 +26,7 @@ struct TaskView: View {
                         .disabled(viewModel.newTaskTitle.trimmingCharacters(in: .whitespaces).isEmpty)
                     }
                 }
-                
+
                 List(viewModel.tasks) { task in
                     HStack {
                         VStack(alignment: .leading) {
@@ -36,11 +36,25 @@ struct TaskView: View {
                                 .foregroundColor(.gray)
                         }
                         Spacer()
-                        Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                            .foregroundColor(task.isCompleted ? .green : .gray)
-                            .font(.title2)
+                        Button(action: {
+                            viewModel.toggleCompletion(for: task)
+                        }) {
+                            Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
+                                .foregroundColor(task.isCompleted ? .green : .gray)
+                                .font(.title2)
+                        }
+                        .buttonStyle(PlainButtonStyle()) // Prevents default button tap highlight
                     }
                 }
+                
+                Button("Delete Completed Tasks") {
+                    viewModel.deleteCompletedTasks()
+                }
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.red)
+                .cornerRadius(10)
+                .frame(maxWidth: .infinity)
             }
             .navigationTitle("My Tasks")
         }

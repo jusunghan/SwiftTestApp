@@ -47,6 +47,16 @@ struct UserProfileView: View {
                     }
                 }
 
+                if let userId = Auth.auth().currentUser?.uid {
+                    NavigationLink(destination: ChatListView(userId: userId)) {
+                        Text("Go to Messenger")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                    }
+                }
                 
                 NavigationLink(destination: UploadView()) {
                     Text("Go to Upload")

@@ -53,29 +53,29 @@ class UserViewModel: ObservableObject {
 
     // ✅ Read
     func fetchUsers() {
-            db.collection("users").getDocuments { snapshot, error in
-                    if let error = error {
-                        print("Error fetching documents: \(error)")
-                        return
-                    }
+        db.collection("users").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching documents: \(error)")
+                return
+            }
 
-                    guard let documents = snapshot?.documents else {
-                        print("No documents found.")
-                        return
-                    }
+            guard let documents = snapshot?.documents else {
+                print("No documents found.")
+                return
+            }
 
-                    print("Fetched \(documents.count) users.")
+            print("Fetched \(documents.count) users.")
 
-                    self.users = documents.map { doc in
-                        let data = doc.data()
-                        print("Document: \(doc.documentID), data: \(data)")
-                        return User(
-                            id: doc.documentID,
-                            name: data["name"] as? String ?? "Unknown",
-                            age: data["age"] as? Int ?? 0
-                        )
-                    }
-                }
+            self.users = documents.map { doc in
+                let data = doc.data()
+                print("Document: \(doc.documentID), data: \(data)")
+                return User(
+                    id: doc.documentID,
+                    name: data["name"] as? String ?? "Unknown",
+                    age: data["age"] as? Int ?? 0
+                )
+            }
+        }
     }
 
     // ✅ Update

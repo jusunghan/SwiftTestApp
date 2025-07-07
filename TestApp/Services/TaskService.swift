@@ -46,4 +46,12 @@ class TaskService {
               }
           }
     }
+    
+    func deleteTask(userId: String, taskId: String) {
+        db.collection("users").document(userId).collection("tasks").document(taskId).delete { error in
+            if let error = error {
+                print("Error deleting task: \(error)")
+            }
+        }
+    }
 }

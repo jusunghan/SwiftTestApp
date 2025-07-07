@@ -22,4 +22,33 @@ class UserService {
             completion(error)
         }
     }
+    
+    func fetchUsers(completion: @escaping ([User]) -> Void) {
+        db.collection("users").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching documents: \(error)")
+                return
+            }
+
+            guard let documents = snapshot?.documents else {
+                print("No documents found.")
+                return
+            }
+
+            print("Fetched \(documents.count) users.")
+
+            let users = documents.map { doc in
+                let data = doc.data()
+                print("Document: \(doc.documentID), data: \(data)")
+                return User(
+                    id: doc.documentID,
+                    name: data["name"] as? String ?? "Unknown",
+                    age: data["age"] as? Int ?? 0
+                )
+            }
+            
+            completion(users)
+        }
+    }
+
 }
